@@ -6,7 +6,7 @@
 var stringifyJSON = function(obj) {
   // your code goes here
   if (obj === undefined)
-  	return 'undefined';
+  	return undefined;
   if (obj === null)
   	return 'null';
   if (typeof obj === 'number')
@@ -22,7 +22,21 @@ var stringifyJSON = function(obj) {
   		if (i != obj.length-1)
   			text += ',';
   	}
+  	if (text[text.length-1]===',')
+  		text = text.slice(0,text.length-1); // Deletes superfluous comma
   	text += ']';
+  	return text;
+  }
+  if (typeof obj === 'object') {
+  	var text = '{';
+  	for (var key in obj) {
+  		var stringifiedValue = stringifyJSON(obj[key]);
+  		if (stringifiedValue !== undefined)
+  			text += stringifyJSON(key)+":"+stringifiedValue+',';
+  	}
+  	if (text[text.length-1]===',')
+  		text = text.slice(0,text.length-1); // Deletes superfluous comma
+  	text += '}';
   	return text;
   }
 };
